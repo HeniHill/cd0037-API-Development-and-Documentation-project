@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 database_name = 'trivia'
-database_path = 'postgres://{}/{}'.format('localhost:5432', database_name)
+database_path = 'postgresql://{}@{}/{}'.format('postgres:Server!123','localhost:5433', database_name)
 
 db = SQLAlchemy()
 
@@ -76,3 +76,5 @@ class Category(db.Model):
             'id': self.id,
             'type': self.type
             }
+    def convert(self):
+        return vars(self)
