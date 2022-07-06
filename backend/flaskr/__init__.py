@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+from  sqlalchemy.sql.expression import func
 
 from models import setup_db, Question, Category
 
@@ -24,7 +25,7 @@ def get_quize_question(Category, previous_questions):
     return Question.query.filter(
         Question.category == Category.id,
         Question.id.notin_(previous_questions)).order_by(
-        Question.id).first()
+        func.random()).first()
 
 
 def create_app(test_config=None):
@@ -222,7 +223,7 @@ def create_app(test_config=None):
         # print(previous_questions)
 
         if quiz_category['id'] == 0:
-            cat = Category.query.all()
+            cat = Category.query.order_by(func.random()).all()
             is_all = True
         else:
             cat = Category.query.filter(
